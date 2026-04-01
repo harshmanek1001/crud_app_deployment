@@ -1,0 +1,35 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: my_mysql
+    env_file:
+      - ./db.env
+    volumes:
+      - ./trainee_backend/schema_script.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "3306:3306"
+  
+  backend:
+    build:
+      context: ./trainee_backend
+      dockerfile: trainee_backend.Dockerfile
+    container_name: my_backend
+    env_file:
+      - ./trainee_backend/.env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+  
+  frontend:
+    build:
+      context: ./trainee_frontend
+      dockerfile: trainee_frontend.Dockerfile
+    container_name: my_frontend
+    env_file:
+      - ./trainee_frontend/.env
+    ports:
+      - "5001:80"
+    depends_on:
+      - backend
+
