@@ -1,1 +1,30 @@
+# Environment variables
 *.env
+.env.*
+!*.env.example
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# OS & IDEs
+.DS_Store
+.vscode/
+.idea/
+.claude*

@@ -1,0 +1,8 @@
+project_name       = "crudapp"
+environment        = "dev"
+location           = "koreacentral"
+db_admin_username  = "mysqladmin"
+db_name            = "trainee_db"
+backend_image_name = "backend"
+backend_image_tag  = "latest"
+
