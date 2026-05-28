@@ -169,5 +169,6 @@ module "application_gateway" {
   subnet_id                 = module.network.appgw_subnet_id
   backend_app_service_fqdn  = module.appservice.default_hostname
   frontend_storage_web_host = module.storage.primary_web_host
+  enable_waf                = var.enable_waf
   tags                      = local.tags
 }

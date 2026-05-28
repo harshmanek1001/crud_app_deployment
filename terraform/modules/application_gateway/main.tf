@@ -27,9 +27,19 @@ resource "azurerm_application_gateway" "appgw" {
   tags                = var.tags
 
   sku {
-    name     = "Standard_v2"
-    tier     = "Standard_v2"
+    name     = var.enable_waf ? "WAF_v2" : "Standard_v2"
+    tier     = var.enable_waf ? "WAF_v2" : "Standard_v2"
     capacity = 1 # Single zone/minimal footprint for dev
+  }
+
+  dynamic "waf_configuration" {
+    for_each = var.enable_waf ? [1] : []
+    content {
+      enabled          = true
+      firewall_mode    = "Detection"
+      rule_set_type    = "OWASP"
+      rule_set_version = "3.2"
+    }
   }
 
   ssl_policy {

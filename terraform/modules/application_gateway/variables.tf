@@ -38,3 +38,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_waf" {
+  description = "Enable Web Application Firewall on Application Gateway"
+  type        = bool
+  default     = false
+}

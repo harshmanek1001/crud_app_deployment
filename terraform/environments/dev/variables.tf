@@ -39,3 +39,9 @@ variable "backend_image_tag" {
   type        = string
   default     = "latest"
 }
+
+variable "enable_waf" {
+  description = "Enable Web Application Firewall on Application Gateway"
+  type        = bool
+  default     = false
+}
