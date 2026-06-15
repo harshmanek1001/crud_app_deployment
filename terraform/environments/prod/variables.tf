@@ -7,7 +7,7 @@ variable "project_name" {
 variable "environment" {
   description = "Deployment environment"
   type        = string
-  default     = "dev"
+  default     = "prod"
 
   validation {
     condition     = contains(["dev", "staging", "prod"], var.environment)
@@ -41,11 +41,13 @@ variable "db_name" {
 variable "backend_image_name" {
   description = "Name of the backend image in ACR"
   type        = string
+  default     = "backend"
 }
 
 variable "backend_image_tag" {
-  description = "Tag of the backend image in ACR — must not be 'latest' in prod"
+  description = "Tag of the backend image in ACR"
   type        = string
+  default     = "v1.0.0"
 
   validation {
     condition     = length(var.backend_image_tag) > 0 && (var.environment != "prod" || var.backend_image_tag != "latest")
@@ -56,6 +58,5 @@ variable "backend_image_tag" {
 variable "enable_waf" {
   description = "Enable Web Application Firewall on Application Gateway"
   type        = bool
-  default     = false
+  default     = true
 }
-

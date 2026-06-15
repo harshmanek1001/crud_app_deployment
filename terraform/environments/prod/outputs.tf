@@ -42,5 +42,3 @@ output "log_analytics_workspace_name" {
   description = "The name of the Log Analytics Workspace"
   value       = module.monitoring.log_analytics_workspace_name
 }
-
-

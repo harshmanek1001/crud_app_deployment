@@ -18,23 +18,23 @@ variable "resource_group_name" {
   type        = string
 }
 
-variable "pe_subnet_id" {
-  description = "Subnet ID where Private Endpoint will be deployed"
+variable "app_service_id" {
+  description = "Resource ID of the App Service"
   type        = string
 }
 
-variable "vault_dns_zone_name" {
-  description = "Vault Private DNS Zone Name"
+variable "mysql_server_id" {
+  description = "Resource ID of the MySQL Flexible Server"
   type        = string
 }
 
-variable "vault_dns_zone_id" {
-  description = "Vault Private DNS Zone ID"
+variable "key_vault_id" {
+  description = "Resource ID of the Key Vault"
   type        = string
 }
 
-variable "current_user_object_id" {
-  description = "Object ID of the current logged-in Azure user to assign Secrets Officer role"
+variable "application_gateway_id" {
+  description = "Resource ID of the Application Gateway"
   type        = string
 }
 
@@ -43,10 +43,3 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "public_network_access_enabled" {
-  description = "Whether public network access is allowed for Key Vault"
-  type        = bool
-  default     = false
-}
-

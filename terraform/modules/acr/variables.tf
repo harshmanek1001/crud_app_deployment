@@ -23,3 +23,10 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "sku" {
+  description = "The SKU name of the container registry (Basic, Standard, Premium)"
+  type        = string
+  default     = "Basic"
+}
+

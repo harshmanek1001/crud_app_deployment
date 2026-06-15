@@ -12,3 +12,9 @@ output "principal_id" {
   description = "The Principal ID of the System-Assigned Managed Identity"
   value       = azurerm_linux_web_app.app.identity[0].principal_id
 }
+
+output "id" {
+  description = "The ID of the web app"
+  value       = azurerm_linux_web_app.app.id
+}
+

@@ -4,8 +4,8 @@ resource "azurerm_mysql_flexible_server" "mysql" {
   location               = var.location
   administrator_login    = var.db_admin_username
   administrator_password = var.db_admin_password
-  backup_retention_days  = 7 # Minimum allowed by Azure Flexible Server API (customizable, but 7 is minimum)
-  sku_name               = "B_Standard_B1ms" # Burstable SKU, lowest cost
+  backup_retention_days  = var.backup_retention_days
+  sku_name               = var.sku_name
   version                = "8.0.21" # MySQL version 8.0
 
   storage {

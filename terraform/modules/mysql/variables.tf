@@ -56,3 +56,16 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "sku_name" {
+  description = "The SKU name for the MySQL Flexible Server"
+  type        = string
+  default     = "B_Standard_B1ms"
+}
+
+variable "backup_retention_days" {
+  description = "Backup retention days for MySQL Flexible Server"
+  type        = number
+  default     = 7
+}
+

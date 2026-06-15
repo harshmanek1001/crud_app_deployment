@@ -66,3 +66,16 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "sku_name" {
+  description = "The SKU SKU name for the Service Plan"
+  type        = string
+  default     = "B1"
+}
+
+variable "always_on" {
+  description = "Should the app always be on"
+  type        = bool
+  default     = false
+}
+

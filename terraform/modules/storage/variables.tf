@@ -23,3 +23,10 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "account_replication_type" {
+  description = "The storage account replication type (LRS, GRS, RA-GRS, ZRS, etc.)"
+  type        = string
+  default     = "LRS"
+}
+

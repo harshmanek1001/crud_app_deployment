@@ -3,7 +3,7 @@ resource "azurerm_service_plan" "asp" {
   resource_group_name = var.resource_group_name
   location            = var.location
   os_type             = "Linux"
-  sku_name            = "B1"
+  sku_name            = var.sku_name
 
   tags = var.tags
 }
@@ -20,7 +20,7 @@ resource "azurerm_linux_web_app" "app" {
   }
 
   site_config {
-    always_on                               = false # Keep cost low for Dev environment
+    always_on                               = var.always_on
     container_registry_use_managed_identity = true
 
     application_stack {

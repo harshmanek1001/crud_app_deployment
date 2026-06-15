@@ -44,3 +44,23 @@ variable "enable_waf" {
   type        = bool
   default     = false
 }
+
+variable "waf_firewall_mode" {
+  description = "WAF firewall mode (Detection or Prevention)"
+  type        = string
+  default     = "Detection"
+}
+
+variable "ssl_certificate_pfx_base64" {
+  description = "Base64 encoded PFX certificate for HTTPS listener"
+  type        = string
+  default     = null
+}
+
+variable "ssl_certificate_passphrase" {
+  description = "Passphrase for the PFX certificate"
+  type        = string
+  default     = null
+  sensitive   = true
+}
+

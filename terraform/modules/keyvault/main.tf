@@ -1,13 +1,13 @@
 data "azurerm_client_config" "current" {}
 
 resource "azurerm_key_vault" "kv" {
-  name                        = "kv-${lower(replace(var.project_name, "-", ""))}-${lower(var.environment)}"
-  resource_group_name         = var.resource_group_name
-  location                    = var.location
-  tenant_id                   = data.azurerm_client_config.current.tenant_id
-  sku_name                    = "standard"
-  enable_rbac_authorization   = true
-  public_network_access_enabled = true # Allowed so the runner can provision secrets, secured by RBAC
+  name                          = "kv-${lower(replace(var.project_name, "-", ""))}-${lower(var.environment)}"
+  resource_group_name           = var.resource_group_name
+  location                      = var.location
+  tenant_id                     = data.azurerm_client_config.current.tenant_id
+  sku_name                      = "standard"
+  enable_rbac_authorization     = true
+  public_network_access_enabled = var.public_network_access_enabled
 
   tags = var.tags
 }
@@ -22,7 +22,7 @@ resource "azurerm_role_assignment" "current_user_secrets_officer" {
 # Wait for Azure AD RBAC role propagation
 resource "time_sleep" "wait_for_rbac" {
   depends_on      = [azurerm_role_assignment.current_user_secrets_officer]
-  create_duration = "1m" # Minimum wait; azurerm provider will retry if it takes longer
+  create_duration = "2m" # Safe margin for role propagation
 }
 
 # Generate secure random password for database administrator

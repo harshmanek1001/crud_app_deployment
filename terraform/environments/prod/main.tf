@@ -46,12 +46,13 @@ module "private_dns" {
 
 # 5. Storage Account (Frontend static hosting)
 module "storage" {
-  source              = "../../modules/storage"
-  project_name        = var.project_name
-  environment         = var.environment
-  location            = var.location
-  resource_group_name = module.resource_group.name
-  tags                = local.tags
+  source                   = "../../modules/storage"
+  project_name             = var.project_name
+  environment              = var.environment
+  location                 = var.location
+  resource_group_name      = module.resource_group.name
+  account_replication_type = "GRS" # Geo-redundant replication for prod
+  tags                     = local.tags
 }
 
 # 6. Container Registry (ACR)
@@ -61,6 +62,7 @@ module "acr" {
   environment         = var.environment
   location            = var.location
   resource_group_name = module.resource_group.name
+  sku                 = "Standard" # Standard registry for prod throughput
   tags                = local.tags
 }
 
@@ -75,24 +77,26 @@ module "keyvault" {
   vault_dns_zone_name           = module.private_dns.vault_dns_zone_name
   vault_dns_zone_id             = module.private_dns.vault_dns_zone_id
   current_user_object_id        = data.azurerm_client_config.current.object_id
-  public_network_access_enabled = true
+  public_network_access_enabled = false # Locked down keyvault for prod security
   tags                          = local.tags
 }
 
 # 8. Database (MySQL Flexible Server + Private Endpoint)
 module "mysql" {
-  source              = "../../modules/mysql"
-  project_name        = var.project_name
-  environment         = var.environment
-  location            = var.location
-  resource_group_name = module.resource_group.name
-  pe_subnet_id        = module.network.pe_subnet_id
-  mysql_dns_zone_id   = module.private_dns.mysql_dns_zone_id
-  mysql_dns_zone_name = module.private_dns.mysql_dns_zone_name
-  db_admin_username   = var.db_admin_username
-  db_admin_password   = module.keyvault.db_password_value
-  db_name             = var.db_name
-  tags                = local.tags
+  source                = "../../modules/mysql"
+  project_name          = var.project_name
+  environment           = var.environment
+  location              = var.location
+  resource_group_name   = module.resource_group.name
+  pe_subnet_id          = module.network.pe_subnet_id
+  mysql_dns_zone_id     = module.private_dns.mysql_dns_zone_id
+  mysql_dns_zone_name   = module.private_dns.mysql_dns_zone_name
+  db_admin_username     = var.db_admin_username
+  db_admin_password     = module.keyvault.db_password_value
+  db_name               = var.db_name
+  sku_name              = "GP_Standard_D2ds_v4" # General Purpose for production
+  backup_retention_days = 14                    # Production backup policy
+  tags                  = local.tags
 }
 
 # 9. App Service (Backend Container hosting + VNet integration + Identity)
@@ -110,6 +114,8 @@ module "appservice" {
   db_name                           = module.mysql.database_name
   db_user                           = var.db_admin_username
   db_password_secret_versionless_id = module.keyvault.db_password_secret_versionless_id
+  sku_name                          = "P1v3" # Production App Service tier
+  always_on                         = true   # Prevent sleeping for prod latency
   tags                              = local.tags
 }
 
@@ -132,7 +138,7 @@ module "application_gateway" {
   backend_app_service_fqdn  = module.appservice.default_hostname
   frontend_storage_web_host = module.storage.primary_web_host
   enable_waf                = var.enable_waf
-  waf_firewall_mode         = "Detection"
+  waf_firewall_mode         = "Prevention" # Actively block threats on production ingress WAF
   tags                      = local.tags
 }
 
@@ -149,4 +155,3 @@ module "monitoring" {
   application_gateway_id = module.application_gateway.gateway_id
   tags                   = local.tags
 }
-

@@ -4,7 +4,7 @@ resource "azurerm_storage_account" "storage" {
   resource_group_name      = var.resource_group_name
   location                 = var.location
   account_tier             = "Standard"
-  account_replication_type = "LRS"
+  account_replication_type = var.account_replication_type
 
   static_website {
     index_document     = "index.html"
