@@ -25,7 +25,7 @@ resource "azurerm_monitor_diagnostic_setting" "appservice" {
     category = "AppServiceAppLogs"
   }
 
-  metric {
+  enabled_metric {
     category = "AllMetrics"
   }
 }
@@ -43,7 +43,7 @@ resource "azurerm_monitor_diagnostic_setting" "mysql" {
     category = "MySqlAuditLogs"
   }
 
-  metric {
+  enabled_metric {
     category = "AllMetrics"
   }
 }
@@ -57,7 +57,7 @@ resource "azurerm_monitor_diagnostic_setting" "keyvault" {
     category = "AuditEvent"
   }
 
-  metric {
+  enabled_metric {
     category = "AllMetrics"
   }
 }
@@ -79,7 +79,7 @@ resource "azurerm_monitor_diagnostic_setting" "appgw" {
     category = "ApplicationGatewayFirewallLog"
   }
 
-  metric {
+  enabled_metric {
     category = "AllMetrics"
   }
 }

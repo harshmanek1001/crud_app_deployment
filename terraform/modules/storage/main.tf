@@ -6,10 +6,11 @@ resource "azurerm_storage_account" "storage" {
   account_tier             = "Standard"
   account_replication_type = var.account_replication_type
 
-  static_website {
-    index_document     = "index.html"
-    error_404_document = "index.html"
-  }
-
   tags = var.tags
+}
+
+resource "azurerm_storage_account_static_website" "storage" {
+  storage_account_id = azurerm_storage_account.storage.id
+  index_document     = "index.html"
+  error_404_document = "index.html"
 }
